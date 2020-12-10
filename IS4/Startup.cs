@@ -38,6 +38,7 @@ namespace IS4
 
             services.AddIdentityServer()
                 .AddAspNetIdentity<IdentityUser>()
+                .AddInMemoryApiScopes(Configuration.GetApiScopes())
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
                 .AddInMemoryClients(Configuration.GetClients())

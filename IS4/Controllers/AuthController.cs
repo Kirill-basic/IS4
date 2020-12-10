@@ -61,5 +61,11 @@ namespace IS4.Controllers
             }
             return View();
         }
+
+        public IActionResult LogOut()
+        {
+            _signInManager.SignOutAsync();
+            return Redirect("https://localhost:44368/Home/Index");
+        }
     }
 }

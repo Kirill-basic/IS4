@@ -1,11 +1,9 @@
-//using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Security.Claims;
 
-namespace MVCclient
+namespace CustomMvc
 {
     public class Startup
     {
@@ -17,34 +15,19 @@ namespace MVCclient
                 config.DefaultChallengeScheme = "oidc";
             })
                 .AddCookie("Cookie")
-                .AddOpenIdConnect("oidc", config =>
+                .AddOpenIdConnect("oidc", config=> 
                 {
                     config.Authority = "https://localhost:44374/";
 
-                    config.ClientId = "client_id_mvc";
-                    config.ClientSecret = "client_secret_mvc";
+                    config.ClientId = "custom_id";
+                    config.ClientSecret = "custom_secret";
                     config.SaveTokens = true;
                     config.ResponseType = "code";
-
-                    //configure cookie claim mapping
-                    //config.ClaimActions.MapUniqueJsonKey(ClaimTypes.Role, ClaimTypes.Role);
-
-                    //loads the claim into the cookie
-                    config.GetClaimsFromUserInfoEndpoint = true;
-
-                    //config scope
-                    //config.Scope.Clear();
-
-                    //config.Scope.Add("openid");
-                    //config.Scope.Add("ApiOne");
-                    //config.Scope.Add("rc.scope");
                 });
-
             services.AddHttpClient();
 
             services.AddControllersWithViews();
         }
-
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -54,7 +37,9 @@ namespace MVCclient
             }
 
             app.UseRouting();
+
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

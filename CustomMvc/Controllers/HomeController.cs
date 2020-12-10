@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MVCclient.Controllers
+namespace CustomMvc.Controllers
 {
     public class HomeController : Controller
     {
@@ -18,7 +18,6 @@ namespace MVCclient.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-
         public IActionResult Index()
         {
             return View();
@@ -28,25 +27,9 @@ namespace MVCclient.Controllers
         public async Task<IActionResult> SecretAsync()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var idToken = await HttpContext.GetTokenAsync("id_token");
-            var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
-            
-            var user = User;
-            var claims = user.Claims.ToList();
-
-            var _idToken = new JwtSecurityTokenHandler().ReadJwtToken(idToken);
-            var _accessToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
-
-            if (User.HasClaim(ClaimTypes.Role, "Admin"))
-            {
-                ViewBag.Message = "This is admin";
-            }
-
-            var result = await GetSecret(accessToken);
-
+            ViewBag.Message = await GetSecret(accessToken);
             return View();
-        } 
-
+        }
         public async Task<string> GetSecret(string accessToken)
         {
             var apiClient = _httpClientFactory.CreateClient();
@@ -57,5 +40,5 @@ namespace MVCclient.Controllers
             var content = await response.Content.ReadAsStringAsync();
             return content;
         }
-   }
+    }
 }

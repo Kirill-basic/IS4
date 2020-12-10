@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace IS4
@@ -19,7 +20,12 @@ namespace IS4
 
                 var user = new IdentityUser("bob");
                 userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user, new System.Security.Claims.Claim(ClaimTypes.Role, "Admin")).GetAwaiter().GetResult();
+                userManager.AddClaimsAsync(user, new List<Claim>() 
+                { 
+                    new Claim(ClaimTypes.Email, "bob@mail.ru"), 
+                    new Claim(ClaimTypes.MobilePhone, "89326092571"), 
+                    new Claim(ClaimTypes.Role, "Admin") 
+                }).GetAwaiter().GetResult();
             }
 
             host.Run();
