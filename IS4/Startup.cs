@@ -15,7 +15,7 @@ namespace IS4
         {
             services.AddDbContext<AppDbContext>(config =>
             {
-                config.UseInMemoryDatabase("Memory");
+                config.UseInMemoryDatabase("MEMORY");
             });
 
             // AddIdentity registers the services
@@ -25,22 +25,22 @@ namespace IS4
                 config.Password.RequireDigit = false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
-                config.SignIn.RequireConfirmedEmail = false;
+                //config.SignIn.RequireConfirmedEmail = false;
             })
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDbContext>();
+            //.AddDefaultTokenProviders();
 
-            services.ConfigureApplicationCookie(config =>
-            {
-                config.Cookie.Name = "IdentityServer.Cookie";
-                config.LoginPath = "/Auth/Login";
-            });
+            //services.ConfigureApplicationCookie(config =>
+            //{
+            //    config.Cookie.Name = "IdentityServer.Cookie";
+            //    config.LoginPath = "/Auth/Login";
+            //});
 
-            services.AddIdentityServer()
+            services.AddIdentityServer(config => { config.UserInteraction.LoginUrl = "/Auth/Login"; })
                 .AddAspNetIdentity<IdentityUser>()
+                .AddInMemoryClients(Configuration.GetClients())
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
-                .AddInMemoryClients(Configuration.GetClients())
                 .AddDeveloperSigningCredential();
 
             services.AddControllersWithViews();

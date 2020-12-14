@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +15,10 @@ namespace ApinOne
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", config => 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
                 {
                     config.Authority = "https://localhost:44374/";
-
                     config.Audience = "ApiOne";
                 });
             services.AddControllers();
@@ -40,7 +40,7 @@ namespace ApinOne
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+
 namespace MVCclient
 {
     public class Startup
@@ -30,6 +31,9 @@ namespace MVCclient
                     config.ClientSecret = "client_secret_mvc";
                     config.SaveTokens = true;
                     config.ResponseType = "code";
+
+                    config.Scope.Add("ApiOne");
+                    config.Scope.Add("ApiTwo");
                 });
 
             services.AddHttpClient();

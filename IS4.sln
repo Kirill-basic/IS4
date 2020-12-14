@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApinOne", "ApinOne\ApinOne.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTwo", "ApiTwo\ApiTwo.csproj", "{A668F671-3DB0-45C0-93E8-782AA56C3D34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCclient", "MVCclient\MVCclient.csproj", "{564609FE-C44E-48D9-8FE8-DDB68586BBD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCclient", "MVCclient\MVCclient.csproj", "{564609FE-C44E-48D9-8FE8-DDB68586BBD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constants", "Constants\Constants.csproj", "{0901E870-ECC2-436F-B891-5241FE13CB0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{564609FE-C44E-48D9-8FE8-DDB68586BBD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{564609FE-C44E-48D9-8FE8-DDB68586BBD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{564609FE-C44E-48D9-8FE8-DDB68586BBD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0901E870-ECC2-436F-B891-5241FE13CB0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0901E870-ECC2-436F-B891-5241FE13CB0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0901E870-ECC2-436F-B891-5241FE13CB0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0901E870-ECC2-436F-B891-5241FE13CB0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -18,11 +18,11 @@ namespace ApiTwo.Controllers
         [Route("/")]
         public async Task<IActionResult> Index()
         {
-            var serverClient = _httpClientFactory.CreateClient();
+            var authClient = _httpClientFactory.CreateClient();
 
-            var discoveryDocument = await serverClient.GetDiscoveryDocumentAsync("https://localhost:44374/");
+            var discoveryDocument = await authClient.GetDiscoveryDocumentAsync("https://localhost:44374/");
 
-            var tokenResponse = await serverClient.RequestClientCredentialsTokenAsync(
+            var tokenResponse = await authClient.RequestClientCredentialsTokenAsync(
                 new ClientCredentialsTokenRequest
                 {
                     Address = discoveryDocument.TokenEndpoint,

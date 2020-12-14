@@ -30,7 +30,7 @@ namespace IS4
                 ClientSecrets={new Secret("client_secret".ToSha256())},
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = {"ApinOne"}
+                AllowedScopes = {"ApiOne"}
             },
             new Client
             {
@@ -42,11 +42,10 @@ namespace IS4
                 AllowedGrantTypes = GrantTypes.Code,
                 AllowedScopes =
                 {
-                    "ApinOne",
+                    "ApiOne",
                     "ApiTwo",
                     IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
-                    "rc.scope"
                 },
                 RequireConsent=false,
                 AlwaysIncludeUserClaimsInIdToken=true

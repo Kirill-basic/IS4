@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,6 +15,13 @@ namespace MVCclient.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public HomeController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -29,7 +37,22 @@ namespace MVCclient.Controllers
             var _idToken = new JwtSecurityTokenHandler().ReadJwtToken(idToken);
             var _accessToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
 
+            var result = await GetSecret(accessToken);
+
             return View();
         }
-   }
+
+        public async Task<string> GetSecret(string accessToken)
+        {
+            var apiClient = _httpClientFactory.CreateClient();
+
+            apiClient.SetBearerToken(accessToken);
+
+            var response = await apiClient.GetAsync("https://localhost:44387/secret");
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return content;
+        }
+    }
 }
