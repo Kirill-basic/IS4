@@ -2,16 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace ApinOne.Controllers
+namespace ApiThree.Controllers
 {
-    public class SecretContoller : Controller
+    public class HomeController : Controller
     {
         [Route("/secret")]
         [Authorize]
         public string Index()
         {
             var claims = User.Claims.ToList();
-            return "Secret message from apione";
+            return "secret from ApiThree";
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using IdentityModel;
+﻿using Constants;
+using IdentityModel;
 using IdentityServer4.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace IS4
 {
@@ -18,32 +17,34 @@ namespace IS4
         public static IEnumerable<ApiResource> GetApiResources() =>
             new List<ApiResource>
             {
-                new ApiResource("ApiOne"),
-                new ApiResource("ApiTwo")
+                new ApiResource(Scopes.ApiOneScope),
+                new ApiResource(Scopes.ApiTwoScope),
+                new ApiResource(Scopes.ApiThreeScope)
             };
 
         public static IEnumerable<Client> GetClients() => new List<Client>
         {
             new Client
             {
-                ClientId="client_id",
-                ClientSecrets={new Secret("client_secret".ToSha256())},
+                ClientId=Clients.ApiOne,
+                ClientSecrets={new Secret(Secrets.ApiOneSecret.ToSha256())},
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = {"ApiOne"}
+                AllowedScopes = {Scopes.ApiOneScope}
             },
             new Client
             {
-                ClientId="client_id_mvc",
-                ClientSecrets={new Secret("client_secret_mvc".ToSha256())},
+                ClientId=Clients.Mvc,
+                ClientSecrets={new Secret(Secrets.MvcSecret.ToSha256())},
 
                 RedirectUris = {"https://localhost:44368/signin-oidc"},
 
                 AllowedGrantTypes = GrantTypes.Code,
                 AllowedScopes =
                 {
-                    "ApiOne",
-                    "ApiTwo",
+                    Scopes.ApiOneScope,
+                    Scopes.ApiTwoScope,
+                    Scopes.ApiThreeScope,
                     IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
                 },

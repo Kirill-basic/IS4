@@ -54,5 +54,17 @@ namespace MVCclient.Controllers
 
             return content;
         }
+
+        [Authorize]
+        public async Task<IActionResult> GetApiThreeSecret()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var apiClient = _httpClientFactory.CreateClient();
+            apiClient.SetBearerToken(accessToken);
+            var response = await apiClient.GetAsync("https://localhost:44376/secret");
+            var content = await response.Content.ReadAsStringAsync();
+            ViewBag.Message = content;
+            return View();
+        }
     }
 }

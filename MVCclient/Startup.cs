@@ -1,3 +1,4 @@
+using Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,13 +28,14 @@ namespace MVCclient
                 {
                     config.Authority = "https://localhost:44374/";
 
-                    config.ClientId = "client_id_mvc";
-                    config.ClientSecret = "client_secret_mvc";
+                    config.ClientId = Clients.Mvc;
+                    config.ClientSecret = Secrets.MvcSecret;
                     config.SaveTokens = true;
                     config.ResponseType = "code";
 
-                    config.Scope.Add("ApiOne");
-                    config.Scope.Add("ApiTwo");
+                    config.Scope.Add(Scopes.ApiOneScope);
+                    config.Scope.Add(Scopes.ApiTwoScope);
+                    config.Scope.Add(Scopes.ApiThreeScope);
                 });
 
             services.AddHttpClient();
