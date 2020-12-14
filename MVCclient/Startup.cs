@@ -35,7 +35,7 @@ namespace MVCclient
 
                     config.Scope.Add(Scopes.ApiOneScope);
                     config.Scope.Add(Scopes.ApiTwoScope);
-                    config.Scope.Add(Scopes.ApiThreeScope);
+                    //config.Scope.Add(Scopes.ApiThreeScope);
                 });
 
             services.AddHttpClient();
