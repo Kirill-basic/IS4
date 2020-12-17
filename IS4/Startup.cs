@@ -43,7 +43,7 @@ namespace IS4
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
                 .AddInMemoryApiScopes(Configuration.GetApiScopes())
-                .AddProfileService<ProfileService>()
+                //.AddProfileService<ProfileService>()
                 .AddDeveloperSigningCredential();
 
             services.AddControllersWithViews();

@@ -2,7 +2,7 @@
 using IdentityModel;
 using IdentityServer4.Models;
 using System.Collections.Generic;
-
+using System.Security.Claims;
 
 namespace IS4
 {
@@ -25,7 +25,7 @@ namespace IS4
         public static IEnumerable<ApiResource> GetApiResources() =>
             new List<ApiResource>
             {
-                new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope } },
+                new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope }, UserClaims={ ClaimTypes.Role, ClaimTypes.Gender} },
                 new ApiResource(Scopes.ApiTwoScope) {Scopes= { Scopes.ApiTwoScope } },
                 new ApiResource(Scopes.ApiThreeScope) {Scopes= { Scopes.ApiThreeScope } }
             };
