@@ -1,4 +1,5 @@
 using IS4.Data;
+using IS4.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -42,6 +43,7 @@ namespace IS4
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
                 .AddInMemoryApiScopes(Configuration.GetApiScopes())
+                .AddProfileService<ProfileService>()
                 .AddDeveloperSigningCredential();
 
             services.AddControllersWithViews();

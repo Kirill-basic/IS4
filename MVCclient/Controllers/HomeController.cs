@@ -39,6 +39,8 @@ namespace MVCclient.Controllers
 
             var result = await GetSecret(accessToken);
 
+            ViewBag.Message = result;
+
             return View();
         }
 
@@ -55,7 +57,7 @@ namespace MVCclient.Controllers
             return content;
         }
 
-        [Authorize]
+        [Authorize(Policy = "IsManager")]
         public async Task<IActionResult> GetApiThreeSecret()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");

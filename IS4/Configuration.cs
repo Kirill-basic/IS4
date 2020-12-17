@@ -57,7 +57,7 @@ namespace IS4
                     IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
                 },
                 RequireConsent=false,
-                AlwaysIncludeUserClaimsInIdToken=true
+                AlwaysIncludeUserClaimsInIdToken=false
             }
         };
     }

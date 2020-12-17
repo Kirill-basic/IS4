@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 
 namespace ApinOne
 {
@@ -17,6 +18,13 @@ namespace ApinOne
                     config.Authority = "https://localhost:44374/";
                     config.Audience = Scopes.ApiOneScope;
                 });
+            //services.AddAuthorization(config =>
+            //{
+            //    config.AddPolicy("IsManager", builder =>
+            //    {
+            //        builder.RequireClaim(ClaimTypes.Role, "Manager");
+            //    });
+            //});
             services.AddControllers();
         }
 
