@@ -4,13 +4,22 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 
 namespace IS4
 {
     public class Startup
     {
+        private readonly IConfiguration _config;
+
+        public Startup(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -26,16 +35,16 @@ namespace IS4
                 config.Password.RequireDigit = false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
-                //config.SignIn.RequireConfirmedEmail = false;
+                config.SignIn.RequireConfirmedEmail = true;
             })
-                .AddEntityFrameworkStores<AppDbContext>();
-            //.AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
-            //services.ConfigureApplicationCookie(config =>
-            //{
-            //    config.Cookie.Name = "IdentityServer.Cookie";
-            //    config.LoginPath = "/Auth/Login";
-            //});
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "IdentityServer.Cookie";
+                config.LoginPath = "/Auth/Login";
+            });
 
             services.AddIdentityServer(config => { config.UserInteraction.LoginUrl = "/Auth/Login"; })
                 .AddAspNetIdentity<IdentityUser>()
@@ -43,8 +52,9 @@ namespace IS4
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
                 .AddInMemoryApiScopes(Configuration.GetApiScopes())
-                //.AddProfileService<ProfileService>()
                 .AddDeveloperSigningCredential();
+
+            services.AddMailKit(config => config.UseMailKit(_config.GetSection("MyEmail").Get<MailKitOptions>()));
 
             services.AddControllersWithViews();
         }
