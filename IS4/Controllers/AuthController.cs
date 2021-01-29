@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using NETCore.MailKit.Core;
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace IS4.Controllers
@@ -33,10 +35,11 @@ namespace IS4.Controllers
             {
                 if (String.IsNullOrEmpty(loginViewModel.ReturnUrl))
                 {
-                    return RedirectToAction("register");
+                    return RedirectToAction("Index", "Home");
                 }
                 return Redirect(loginViewModel.ReturnUrl);
             }
+
             return View();
         }
 
@@ -68,7 +71,7 @@ namespace IS4.Controllers
             return RedirectToAction("Login");
         }
 
-        
+
         public async Task<IActionResult> VerifyEmail(string userId, string code)
         {
             var user = await _userManager.FindByIdAsync(userId);

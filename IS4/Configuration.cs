@@ -8,6 +8,14 @@ namespace IS4
 {
     public static class Configuration
     {
+        public static IEnumerable<ApiResource> GetApiResources() =>
+            new List<ApiResource>
+            {
+                new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope }, UserClaims={ ClaimTypes.Role, ClaimTypes.Gender, "picture"} },
+                new ApiResource(Scopes.ApiTwoScope) {Scopes= { Scopes.ApiTwoScope } },
+                new ApiResource(Scopes.ApiThreeScope) {Scopes= { Scopes.ApiThreeScope } }
+            };
+
         public static IEnumerable<ApiScope> GetApiScopes() => new List<ApiScope>
         {
             new ApiScope(Scopes.ApiOneScope),
@@ -22,13 +30,6 @@ namespace IS4
                 new IdentityResources.Profile(),
             };
 
-        public static IEnumerable<ApiResource> GetApiResources() =>
-            new List<ApiResource>
-            {
-                new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope }, UserClaims={ ClaimTypes.Role, ClaimTypes.Gender} },
-                new ApiResource(Scopes.ApiTwoScope) {Scopes= { Scopes.ApiTwoScope } },
-                new ApiResource(Scopes.ApiThreeScope) {Scopes= { Scopes.ApiThreeScope } }
-            };
 
         public static IEnumerable<Client> GetClients() => new List<Client>
         {
@@ -57,7 +58,8 @@ namespace IS4
                     IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
                 },
                 RequireConsent=false,
-                AlwaysIncludeUserClaimsInIdToken=false
+                AlwaysIncludeUserClaimsInIdToken=true,
+                AlwaysSendClientClaims=true
             }
         };
     }

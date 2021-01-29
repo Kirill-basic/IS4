@@ -1,3 +1,4 @@
+using IdentityServer4.Services;
 using IS4.Data;
 using IS4.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +36,7 @@ namespace IS4
                 config.Password.RequireDigit = false;
                 config.Password.RequireNonAlphanumeric = false;
                 config.Password.RequireUppercase = false;
-                config.SignIn.RequireConfirmedEmail = true;
+                config.SignIn.RequireConfirmedEmail = false;
             })
                 .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
@@ -53,6 +54,10 @@ namespace IS4
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
                 .AddInMemoryApiScopes(Configuration.GetApiScopes())
                 .AddDeveloperSigningCredential();
+
+            services.AddTransient<IProfileService, CustomProfileService>();
+
+            var emailConfig = _config.GetSection("MyEmail").Get<MailKitOptions>();
 
             services.AddMailKit(config => config.UseMailKit(_config.GetSection("MyEmail").Get<MailKitOptions>()));
 

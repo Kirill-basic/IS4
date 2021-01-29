@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace ApinOne.Controllers
+namespace ApiOne.Controllers
 {
     public class SecretContoller : Controller
     {
