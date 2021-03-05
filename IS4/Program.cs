@@ -1,3 +1,4 @@
+using IdentityModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,10 +16,11 @@ namespace IS4
             using (var scope = host.Services.CreateScope())
             {
                 var userManager = scope.ServiceProvider
-                    .GetRequiredService<UserManager<IdentityUser>>();
+                    .GetRequiredService<UserManager<CustomUser>>();
 
-                var user = new IdentityUser("bob");
+                var user = new CustomUser("bob") { PhoneNumber="89326092571", Pic="SomeUrl", Picture=new byte[10] };
                 userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
+                userManager.AddClaimAsync(user, new Claim(ClaimTypes.Gender, "GenderFluidHeliSexual"));
             }
 
             host.Run();

@@ -10,11 +10,11 @@ namespace IS4.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<CustomUser> _signInManager;
+        private readonly UserManager<CustomUser> _userManager;
         private readonly IEmailService _emailService;
 
-        public AuthController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IEmailService emailService)
+        public AuthController(SignInManager<CustomUser> signInManager, UserManager<CustomUser> userManager, IEmailService emailService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -56,7 +56,7 @@ namespace IS4.Controllers
             {
                 return View(registerViewModel);
             }
-            var user = new IdentityUser(registerViewModel.UserName);
+            var user = new CustomUser(registerViewModel.UserName);
             var result = await _userManager.CreateAsync(user, registerViewModel.Password);
             if (result.Succeeded)
             {

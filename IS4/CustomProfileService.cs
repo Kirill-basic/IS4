@@ -11,10 +11,10 @@ namespace IS4
 {
     public class CustomProfileService : IProfileService
     {
-        private readonly IUserClaimsPrincipalFactory<IdentityUser> _claimsFactory;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserClaimsPrincipalFactory<CustomUser> _claimsFactory;
+        private readonly UserManager<CustomUser> _userManager;
 
-        public CustomProfileService(UserManager<IdentityUser> userManager, IUserClaimsPrincipalFactory<IdentityUser> claimsFactory)
+        public CustomProfileService(UserManager<CustomUser> userManager, IUserClaimsPrincipalFactory<CustomUser> claimsFactory)
         {
             _userManager = userManager;
             _claimsFactory = claimsFactory;
@@ -29,7 +29,9 @@ namespace IS4
             var claims = principal.Claims.ToList();
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
 
-            claims.Add(new Claim("employee_id", "someid" ?? string.Empty));
+            claims.Add(new Claim("TestClaim1", "TestClaim1!!!!!!" ?? string.Empty));
+            claims.Add(new Claim("TestClaim2", "TestClaim2!!!!!!" ?? string.Empty));
+            claims.Add(new Claim("TestClaim3", "TestClaim3!!!!!!" ?? string.Empty));
 
             context.IssuedClaims = claims;
         }

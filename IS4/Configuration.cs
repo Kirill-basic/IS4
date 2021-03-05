@@ -1,8 +1,8 @@
 ﻿using Constants;
 using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace IS4
 {
@@ -11,7 +11,7 @@ namespace IS4
         public static IEnumerable<ApiResource> GetApiResources() =>
             new List<ApiResource>
             {
-                new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope }, UserClaims={ ClaimTypes.Role, ClaimTypes.Gender, "picture"} },
+                new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope } },
                 new ApiResource(Scopes.ApiTwoScope) {Scopes= { Scopes.ApiTwoScope } },
                 new ApiResource(Scopes.ApiThreeScope) {Scopes= { Scopes.ApiThreeScope } }
             };
@@ -54,12 +54,31 @@ namespace IS4
                     Scopes.ApiOneScope,
                     Scopes.ApiTwoScope,
                     Scopes.ApiThreeScope,
-                    IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
                 },
                 RequireConsent=false,
                 AlwaysIncludeUserClaimsInIdToken=true,
                 AlwaysSendClientClaims=true
+            },
+            new Client
+            {
+                ClientId = Clients.Wpf,
+
+                AllowedGrantTypes = GrantTypes.Code,
+                RequirePkce = true,
+                RequireClientSecret = false,
+
+                RedirectUris = { "http://localhost/sample-wpf-app" },
+
+                AllowedScopes =
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    Scopes.ApiOneScope,
+                },
+                AllowAccessTokensViaBrowser = true,
+                RequireConsent = false,
             }
         };
     }

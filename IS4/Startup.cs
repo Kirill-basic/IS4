@@ -30,7 +30,7 @@ namespace IS4
             });
 
             // AddIdentity registers the services
-            services.AddIdentity<IdentityUser, IdentityRole>(config =>
+            services.AddIdentity<CustomUser, IdentityRole>(config =>
             {
                 config.Password.RequiredLength = 4;
                 config.Password.RequireDigit = false;
@@ -48,7 +48,7 @@ namespace IS4
             });
 
             services.AddIdentityServer(config => { config.UserInteraction.LoginUrl = "/Auth/Login"; })
-                .AddAspNetIdentity<IdentityUser>()
+                .AddAspNetIdentity<CustomUser>()
                 .AddInMemoryClients(Configuration.GetClients())
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
