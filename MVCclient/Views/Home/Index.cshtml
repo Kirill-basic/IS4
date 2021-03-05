@@ -6,3 +6,14 @@
     <a href="~/Home/GetApiThreeSecret">Api3 secret</a>
     <a href="https://localhost:44374/Auth/Register">Register</a>
 </p>
+<div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <ul>
+            @foreach (var claim in User.Claims)
+            {
+                <li>@claim</li>
+            }
+        </ul>
+    }
+</div>

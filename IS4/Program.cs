@@ -19,8 +19,6 @@ namespace IS4
 
                 var user = new IdentityUser("bob");
                 userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Admin")).GetAwaiter().GetResult();
-                userManager.AddClaimAsync(user, new Claim(ClaimTypes.Gender, "GenderFluidHeliSexual")).GetAwaiter().GetResult();
             }
 
             host.Run();
