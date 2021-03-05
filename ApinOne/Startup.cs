@@ -14,7 +14,7 @@ namespace ApiOne
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
                 {
-                    config.Authority = "https://localhost:44374/";
+                    config.Authority = "https://localhost:5001/";
                     config.Audience = Scopes.ApiOneScope;
                 });
             //services.AddAuthorization(config =>

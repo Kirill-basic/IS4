@@ -46,7 +46,7 @@ namespace IS4
                 ClientId=Clients.Mvc,
                 ClientSecrets={new Secret(Secrets.MvcSecret.ToSha256())},
 
-                RedirectUris = {"https://localhost:44368/signin-oidc"},
+                RedirectUris = {"https://localhost:6001/signin-oidc"},
 
                 AllowedGrantTypes = GrantTypes.Code,
                 AllowedScopes =

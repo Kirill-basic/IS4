@@ -26,7 +26,7 @@ namespace MVCclient
                 .AddCookie("Cookie")
                 .AddOpenIdConnect("oidc", config =>
                 {
-                    config.Authority = "https://localhost:44374/";
+                    config.Authority = "https://localhost:5001/";
 
                     config.ClientId = Clients.Mvc;
                     config.ClientSecret = Secrets.MvcSecret;

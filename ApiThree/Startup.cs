@@ -15,7 +15,7 @@ namespace ApiThree
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
-                    options.Authority = "https://localhost:44374/";
+                    options.Authority = "https://localhost:5001/";
                     options.Audience = Scopes.ApiThreeScope;
                 });
             services.AddControllers();
