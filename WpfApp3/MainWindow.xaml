@@ -7,9 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Button1" HorizontalAlignment="Left" Margin="209,55,0,0" VerticalAlignment="Top" Height="42" Width="152" Click="Button_Click"/>
-        <Button Content="Button2" HorizontalAlignment="Left" Margin="209,127,0,0" VerticalAlignment="Top" Height="42" Width="152" Click="Button_Click_1"/>
-        <Button Content="Button3" HorizontalAlignment="Left" Margin="209,0,0,0" VerticalAlignment="Center" Height="42" Width="152" Click="Button_Click_2"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0">
+            <Button Content="Button1" Margin="5" Click="Button_Click"/>
+            <Button Content="Button2" Margin="5" Click="Button_Click_1"/>
+            <Button Content="Button3" Margin="5" Click="Button_Click_2"/>
+        </StackPanel>
+        <local:ProtectedWpfControl Grid.Row="0" Grid.Column="1"/>
+        <local:UnProtectedControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>
 
     </Grid>
 </Window>

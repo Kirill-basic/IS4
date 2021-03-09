@@ -1,11 +1,11 @@
-﻿using IdentityModel;
-using IdentityModel.OidcClient;
+﻿using IdentityModel.OidcClient;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using System.Windows.Controls;
 
 namespace WpfApp3
 {
@@ -15,7 +15,8 @@ namespace WpfApp3
     public partial class MainWindow : Window
     {
         private OidcClient _oidcClient = null;
-        private LoginResult result;
+        private LoginResult _result;
+        private ClaimsPrincipal _user;
 
 
         public MainWindow()
@@ -28,6 +29,7 @@ namespace WpfApp3
                 RedirectUri = "http://localhost/sample-wpf-app",
                 Browser = new WpfEmbeddedBrowser()
             };
+
             _oidcClient = new OidcClient(options);
             InitializeComponent();
         }
@@ -37,35 +39,39 @@ namespace WpfApp3
 
             try
             {
-                result = await _oidcClient.LoginAsync();
+                var myResult = await _oidcClient.LoginAsync();
+                _result = await _oidcClient.LoginAsync();
+                _user = _result.User;
             }
             catch (Exception ex)
             {
                 return;
             }
 
-            if (result.IsError)
+            if (_result.IsError)
             {
 
             }
             else
             {
                 var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _result.AccessToken);
 
                 var apiResult = await client.GetStringAsync("https://localhost:44387/secret");
                 MessageBox.Show(apiResult);
             }
         }
 
+        [Authorize]
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"UserName is {result.User.Claims.Where(x => x.Type == JwtClaimTypes.Name).FirstOrDefault().Value}");
+
         }
 
+        [Authorize]
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            if (result.User.Identity.IsAuthenticated)
+            if (_user.Identity.IsAuthenticated)
             {
                 MessageBox.Show("User is authenticated");
             }
