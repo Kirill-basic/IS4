@@ -2,6 +2,8 @@
 using IdentityModel.OidcClient;
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -20,7 +22,6 @@ namespace WpfApp3
         {
             var options = new OidcClientOptions()
             {
-                //TODO:change login path
                 Authority = "https://localhost:5001",
                 ClientId = Constants.Clients.Wpf,
                 Scope = "openid ApiOne profile",
@@ -49,7 +50,11 @@ namespace WpfApp3
             }
             else
             {
-                var name = result.User.Identity.Name;
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+
+                var apiResult = await client.GetStringAsync("https://localhost:44387/secret");
+                MessageBox.Show(apiResult);
             }
         }
 
