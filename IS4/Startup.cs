@@ -55,8 +55,6 @@ namespace IS4
                 .AddInMemoryApiScopes(Configuration.GetApiScopes())
                 .AddDeveloperSigningCredential();
 
-            services.AddLocalApiAuthentication().AddAuthentication();
-
             services.AddTransient<IProfileService, CustomProfileService>();
 
             var emailConfig = _config.GetSection("MyEmail").Get<MailKitOptions>();
@@ -76,8 +74,6 @@ namespace IS4
             app.UseRouting();
 
             app.UseIdentityServer();
-            app.UseAuthentication();
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
