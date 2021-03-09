@@ -13,7 +13,8 @@ namespace IS4
             {
                 new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope } },
                 new ApiResource(Scopes.ApiTwoScope) {Scopes= { Scopes.ApiTwoScope } },
-                new ApiResource(Scopes.ApiThreeScope) {Scopes= { Scopes.ApiThreeScope } }
+                new ApiResource(Scopes.ApiThreeScope) {Scopes= { Scopes.ApiThreeScope } },
+                new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
             };
 
         public static IEnumerable<ApiScope> GetApiScopes() => new List<ApiScope>
@@ -56,6 +57,7 @@ namespace IS4
                     Scopes.ApiThreeScope,
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.LocalApi.ScopeName
                 },
                 RequireConsent=false,
                 AlwaysIncludeUserClaimsInIdToken=true,

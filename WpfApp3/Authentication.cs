@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace WpfApp3
 {
@@ -11,7 +12,7 @@ namespace WpfApp3
         private static Authentication AuthenticationInstance;
         private OidcClient _client;
         private LoginResult _loginResult;
-        private ClaimsPrincipal User;
+        public ClaimsPrincipal User;
 
         private Authentication()
         {
@@ -39,6 +40,11 @@ namespace WpfApp3
         }
 
 
-
+        public async Task Login()
+        {
+            var result = await _client.PrepareLoginAsync();
+            _loginResult = await _client.LoginAsync();
+            User = _loginResult.User;
+        }
     }
 }

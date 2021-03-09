@@ -18,9 +18,14 @@ namespace WpfApp3
     /// </summary>
     public partial class ProtectedWpfControl : UserControl
     {
+        private Authentication _authentication;
         public ProtectedWpfControl()
         {
+            _authentication = Authentication.GetAuthentication();
+
             InitializeComponent();
+
+
         }
     }
 }
