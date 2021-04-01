@@ -18,7 +18,7 @@ namespace IS4
                 var userManager = scope.ServiceProvider
                     .GetRequiredService<UserManager<CustomUser>>();
 
-                var user = new CustomUser("bob") { PhoneNumber="89326092571", Pic="SomeUrl", Picture=new byte[10] };
+                var user = new CustomUser("bob") { PhoneNumber="89326092571", Pic="SomeUrl", Picture=new byte[10], Email="bob@mail.ru" };
                 userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user, new Claim(ClaimTypes.Gender, "GenderFluidHeliSexual"));
             }

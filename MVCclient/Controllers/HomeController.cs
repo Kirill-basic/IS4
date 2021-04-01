@@ -68,5 +68,15 @@ namespace MVCclient.Controllers
             ViewBag.Message = content;
             return View();
         }
+
+        [Authorize]
+        public async Task<IActionResult> GetIdentitySecretAsync()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var apiClient = _httpClientFactory.CreateClient();
+            apiClient.SetBearerToken(accessToken);
+            var response = await apiClient.GetAsync("https://localhost:5001/LocalApi");
+            return View();
+        }
     }
 }

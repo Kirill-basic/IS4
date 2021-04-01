@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using static IdentityServer4.IdentityServerConstants;
 
 namespace IS4.Controllers
 {
@@ -14,6 +14,20 @@ namespace IS4.Controllers
 
             var claims = user.Claims;
 
+            return View();
+        }
+
+        [Authorize]
+        public async System.Threading.Tasks.Task<IActionResult> Secret1Async()
+        {
+            var claims = User.Claims;
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Secret2()
+        {
+            var claims = User.Claims;
             return View();
         }
     }

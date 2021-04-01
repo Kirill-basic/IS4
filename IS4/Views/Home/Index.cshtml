@@ -2,16 +2,29 @@
     <link rel="stylesheet" type="text/css" href="~/css/Custom.css"/>
 </header>
 <h1>Home page</h1>
-@if (User.Identity != null)
-{
-    <h2>@User.Identity.Name</h2>
-}
-@foreach (var claim in User.Claims)
-{
-    <p>@claim</p>
-}
+<div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <ul>
+            @foreach (var claim in User.Claims)
+            {
+                <li>@claim</li>
+            }
+        </ul>
+    }
+</div>
 <div style="width:100px; height:100px">
     <form style="width:100%; height:100%; color:antiquewhite" asp-controller="auth" asp-action="Login" asp-route-returnUrl="home/index" method="get">
         <button style="color:mediumaquamarine; width:100%; height:50%;">Login</button>
     </form>
 </div>
+<p>
+    <form asp-controller="Home" asp-action="Secret1">
+        <button>Secret1</button>
+    </form>
+</p>
+<p>
+    <form asp-controller="Home" asp-action="Secret2">
+        <button>Secret1</button>
+    </form>
+</p>

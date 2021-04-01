@@ -8,6 +8,6 @@ namespace Constants
 
         public static string Mvc { get; set; } = "client_id_mvc";
 
-        public static string Wpf { get; set; } = "client_id_wpf";
+        public static string Wpf { get; set; } = "WpfExport";
     }
 }

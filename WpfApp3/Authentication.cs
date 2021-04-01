@@ -1,17 +1,24 @@
 ﻿using IdentityModel.OidcClient;
-using System;
-using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace WpfApp3
 {
     class Authentication
     {
-        private static Authentication AuthenticationInstance;
+        private static Authentication _authenticationInstance;
         private OidcClient _client;
         private LoginResult _loginResult;
-        private ClaimsPrincipal User;
+        public ClaimsPrincipal User;
+        public bool IsAuthenticated
+        {
+            get
+            {
+                return User?.Identity.IsAuthenticated ?? false;
+            }
+        }
 
         private Authentication()
         {
@@ -19,7 +26,7 @@ namespace WpfApp3
             {
                 Authority = "https://localhost:5001",
                 ClientId = Constants.Clients.Wpf,
-                Scope = "openid ApiOne profile",
+                Scope = "openid profile",
                 RedirectUri = "http://localhost/sample-wpf-app",
                 Browser = new WpfEmbeddedBrowser()
             };
@@ -30,15 +37,26 @@ namespace WpfApp3
 
         public static Authentication GetAuthentication()
         {
-            if (AuthenticationInstance == null)
+            if (_authenticationInstance == null)
             {
-                AuthenticationInstance = new Authentication();
+                _authenticationInstance = new Authentication();
             }
 
-            return AuthenticationInstance;
+            return _authenticationInstance;
         }
 
 
+        public async Task Login()
+        {
+            _loginResult = await _client.LoginAsync();
+            User = _loginResult.User;
+        }
 
+        public async Task GetRequestAsync()
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _loginResult.AccessToken);
+            var apiResult = await client.GetStringAsync("https://localhost:44387/secret");
+        }
     }
 }
