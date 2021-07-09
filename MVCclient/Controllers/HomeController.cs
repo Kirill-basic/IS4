@@ -50,7 +50,7 @@ namespace MVCclient.Controllers
 
             apiClient.SetBearerToken(accessToken);
 
-            var response = await apiClient.GetAsync("https://localhost:44387/secret");
+            var response = await apiClient.GetAsync("https://localhost:8001/secret");
 
             var content = await response.Content.ReadAsStringAsync();
 
@@ -63,7 +63,7 @@ namespace MVCclient.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var apiClient = _httpClientFactory.CreateClient();
             apiClient.SetBearerToken(accessToken);
-            var response = await apiClient.GetAsync("https://localhost:44376/secret");
+            var response = await apiClient.GetAsync("https://localhost:7001/secret");
             var content = await response.Content.ReadAsStringAsync();
             ViewBag.Message = content;
             return View();
