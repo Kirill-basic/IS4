@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
@@ -33,9 +31,13 @@ namespace MVCclient.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var idToken = await HttpContext.GetTokenAsync("id_token");
             var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
+            
+            var user = User;
+            var claims = user.Claims.ToList();
 
             var _idToken = new JwtSecurityTokenHandler().ReadJwtToken(idToken);
             var _accessToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
+
 
             var result = await GetSecret(accessToken);
 
@@ -66,7 +68,19 @@ namespace MVCclient.Controllers
             var response = await apiClient.GetAsync("https://localhost:7001/secret");
             var content = await response.Content.ReadAsStringAsync();
             ViewBag.Message = content;
+
             return View();
+        } 
+
+        public async Task<string> GetSecret(string accessToken)
+        {
+            var apiClient = _httpClientFactory.CreateClient();
+
+            apiClient.SetBearerToken(accessToken);
+            var response = await apiClient.GetAsync("https://localhost:44387/secret");
+
+            var content = await response.Content.ReadAsStringAsync();
+            return content;
         }
     }
 }

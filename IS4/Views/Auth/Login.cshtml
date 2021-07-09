@@ -3,10 +3,6 @@
 
 
 <form asp-controller="Auth" asp-action="Login" method="post">
-    @*<input type="text" name="username" value="" />
-        <input type="text" name="password" value="" />
-        <input type="text" name="confirmpassword" value="" />
-        <button type="submit">Login</button>*@
     <input type="hidden" asp-for="ReturnUrl" />
     <div>
         <label>Username</label>

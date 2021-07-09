@@ -47,9 +47,11 @@ namespace IS4
                 config.LoginPath = "/Auth/Login";
             });
 
+
             services.AddIdentityServer(config => { config.UserInteraction.LoginUrl = "/Auth/Login"; })
                 .AddAspNetIdentity<CustomUser>()
                 .AddInMemoryClients(Configuration.GetClients())
+
                 .AddInMemoryApiResources(Configuration.GetApiResources())
                 .AddInMemoryIdentityResources(Configuration.GetIdentityResources())
                 .AddInMemoryApiScopes(Configuration.GetApiScopes())

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace IS4
@@ -21,6 +22,7 @@ namespace IS4
                 var user = new CustomUser("bob") { PhoneNumber="89326092571", Pic="SomeUrl", Picture=new byte[10] };
                 userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
                 userManager.AddClaimAsync(user, new Claim(ClaimTypes.Gender, "GenderFluidHeliSexual"));
+
             }
 
             host.Run();

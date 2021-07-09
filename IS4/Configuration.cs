@@ -4,10 +4,12 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
+
 namespace IS4
 {
     public static class Configuration
     {
+
         public static IEnumerable<ApiResource> GetApiResources() =>
             new List<ApiResource>
             {
@@ -29,6 +31,16 @@ namespace IS4
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource
+                {
+                    Name = "rc.scope",
+                    UserClaims =
+                    {
+                        ClaimTypes.Role,
+                        ClaimTypes.Email,
+                        ClaimTypes.MobilePhone
+                    }
+                }
             };
 
 
@@ -40,7 +52,9 @@ namespace IS4
                 ClientSecrets={new Secret(Secrets.ApiOneSecret.ToSha256())},
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
+
                 AllowedScopes = {Scopes.ApiOneScope}
+
             },
             new Client
             {
@@ -81,6 +95,7 @@ namespace IS4
                 },
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
+
             }
         };
     }
