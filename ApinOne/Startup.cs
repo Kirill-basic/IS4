@@ -1,21 +1,39 @@
+using Constants;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace ApinOne
+using Microsoft.IdentityModel.Tokens;
+using System;
+
+
+namespace ApiOne
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", config => 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, config =>
                 {
-                    config.Authority = "https://localhost:44374/";
-
-                    config.Audience = "ApiOne";
+                    config.Authority = "https://localhost:5001/";
+                    config.Audience = Scopes.ApiOneScope;
+                    config.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ClockSkew = TimeSpan.FromSeconds(10)
+                    };
                 });
+
+            //TODO: old policy testing. Check it
+            //services.AddAuthorization(config =>
+            //{
+            //    config.AddPolicy("IsManager", builder =>
+            //    {
+            //        builder.RequireClaim(ClaimTypes.Role, "Manager");
+            //    });
+            //});
             services.AddControllers();
         }
 
@@ -35,7 +53,7 @@ namespace ApinOne
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

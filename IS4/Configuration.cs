@@ -1,13 +1,31 @@
-﻿using IdentityModel;
+﻿using Constants;
+using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace IS4
 {
     public static class Configuration
     {
-        public static IEnumerable<ApiScope> GetApiScopes() => new List<ApiScope> { new ApiScope(name: "ApiOne", displayName: "ApiOne") };
+        public static IEnumerable<ApiResource> GetApiResources() =>
+            new List<ApiResource>
+            {
+                new ApiResource(Scopes.ApiOneScope) {Scopes= { Scopes.ApiOneScope } },
+                new ApiResource(Scopes.ApiTwoScope) {Scopes= { Scopes.ApiTwoScope } },
+                new ApiResource(Scopes.ApiThreeScope) {Scopes= { Scopes.ApiThreeScope } },
+
+                new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
+            };
+
+        public static IEnumerable<ApiScope> GetApiScopes() => new List<ApiScope>
+        {
+            new ApiScope(Scopes.ApiOneScope),
+            new ApiScope(Scopes.ApiTwoScope),
+            new ApiScope(Scopes.ApiThreeScope),
+            new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
+        };
+
         public static IEnumerable<IdentityResource> GetIdentityResources() =>
             new List<IdentityResource>
             {
@@ -24,71 +42,61 @@ namespace IS4
                     }
                 }
             };
-        public static IEnumerable<ApiResource> GetApiResources() =>
-            new List<ApiResource>
-            {
-                //new ApiResource("ApiOne"),
-                new ApiResource("ApiTwo"),
-                new ApiResource("ApiOne"),
-                
-                //adding claims to access token
-                //new ApiResource("ApiOne", "ApiOne", new string[] { ClaimTypes.Role, ClaimTypes.Email, ClaimTypes.MobilePhone })
-                //{
-                //    Scopes = new string[]
-                //    {
-                //        "rc.scope"
-                //    }
-                //}
-            };
 
         public static IEnumerable<Client> GetClients() => new List<Client>
         {
             new Client
             {
-                ClientId="client_id",
-                ClientSecrets={new Secret("client_secret".ToSha256())},
+                ClientId=Clients.ApiOne,
+                ClientSecrets={new Secret(Secrets.ApiOneSecret.ToSha256())},
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = {"ApiOne"}
+                AllowedScopes = {Scopes.ApiOneScope}
+
             },
             new Client
             {
-                ClientId="client_id_mvc",
-                ClientSecrets={new Secret("client_secret_mvc".ToSha256())},
+                ClientId=Clients.Mvc,
+                ClientSecrets={new Secret(Secrets.MvcSecret.ToSha256())},
 
-                RedirectUris = {"https://localhost:44368/signin-oidc"},
+                RedirectUris = {"https://localhost:6001/signin-oidc"},
 
                 AllowedGrantTypes = GrantTypes.Code,
                 AllowedScopes =
                 {
-                    "ApiOne",
-                    "ApiTwo",
-                    IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
-                    "rc.scope"
+                    Scopes.ApiOneScope,
+                    Scopes.ApiTwoScope,
+                    Scopes.ApiThreeScope,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+
+                    //TODO:not sure do i need it or not
+                    IdentityServerConstants.StandardScopes.OfflineAccess
                 },
-                RequireConsent=false,
-                
-                //puts all the claims in the id token
-                //AlwaysIncludeUserClaimsInIdToken=true
+                AllowOfflineAccess = true,
+                RequireConsent = false,
+                AlwaysIncludeUserClaimsInIdToken = true,
+                AlwaysSendClientClaims = true,
+                AccessTokenLifetime = 15
             },
             new Client
             {
-                ClientId="custom_id",
-                ClientSecrets={new Secret("custom_secret".ToSha256())},
-
-                RedirectUris = {"https://localhost:44379/signin-oidc"},
+                ClientId = Clients.Wpf,
 
                 AllowedGrantTypes = GrantTypes.Code,
+                RequirePkce = true,
+                RequireClientSecret = false,
+
+                RedirectUris = { "http://localhost/sample-wpf-app" },
+
                 AllowedScopes =
                 {
-                    "ApiOne",
-                    "ApiTwo",
-                    IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
-                    "rc.scope"
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    Scopes.ApiOneScope,
                 },
-                RequireConsent=false,
+                AllowAccessTokensViaBrowser = true,
+                RequireConsent = false,
             }
         };
     }

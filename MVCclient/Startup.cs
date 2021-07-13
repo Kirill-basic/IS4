@@ -1,9 +1,13 @@
-//using Microsoft.AspNetCore.Authentication;
+
+using Constants;
+using Microsoft.AspNetCore.Authentication;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
+
 
 namespace MVCclient
 {
@@ -19,26 +23,30 @@ namespace MVCclient
                 .AddCookie("Cookie")
                 .AddOpenIdConnect("oidc", config =>
                 {
-                    config.Authority = "https://localhost:44374/";
+                    config.Authority = "https://localhost:5001/";
 
-                    config.ClientId = "client_id_mvc";
-                    config.ClientSecret = "client_secret_mvc";
+                    config.ClientId = Clients.Mvc;
+                    config.ClientSecret = Secrets.MvcSecret;
                     config.SaveTokens = true;
                     config.ResponseType = "code";
 
-                    //configure cookie claim mapping
-                    //config.ClaimActions.MapUniqueJsonKey(ClaimTypes.Role, ClaimTypes.Role);
+                    config.Scope.Add(Scopes.ApiOneScope);
+                    config.Scope.Add(Scopes.ApiTwoScope);
+                    config.Scope.Add(Scopes.ApiThreeScope);
 
-                    //loads the claim into the cookie
-                    config.GetClaimsFromUserInfoEndpoint = true;
-
-                    //config scope
-                    //config.Scope.Clear();
-
-                    //config.Scope.Add("openid");
-                    //config.Scope.Add("ApiOne");
-                    //config.Scope.Add("rc.scope");
+                    //TODO:some reference issues, don't want to solve them now
+                    // config.Scope.Add(IdentityServerConstants.StandardScopes.OfflineAccess);
+                    config.Scope.Add("offline_access");
                 });
+
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("IsManager", builder =>
+                {
+                    builder.RequireClaim(ClaimTypes.Role, "Manager");
+
+                });
+            });
 
             services.AddHttpClient();
 

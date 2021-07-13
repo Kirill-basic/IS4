@@ -2,12 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>10cb832f-0930-4743-815d-c3170c2eb3f9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityServer4" Version="4.1.1" />
+    <PackageReference Include="IdentityModel" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Constants\Constants.csproj" />
+  </ItemGroup>
   
-
 </Project>

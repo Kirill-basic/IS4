@@ -3,5 +3,19 @@
     <a href="~/Home/Secret">secret</a>
 </p>
 <p>
-    <a href="https://localhost:44374/Auth/LogOut">log out</a>
+    <a href="~/Home/GetApiThreeSecret">Api3 secret</a>
+    <a href="https://localhost:44374/Auth/Register">Register</a>
+    <a href="~/Home/GetIdentitySecret">IdentitySecret</a>
 </p>
+<div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <ul>
+            @foreach (var claim in User.Claims)
+            {
+                <li>@claim</li>
+            }
+        </ul>
+    }
+</div>
+
