@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +39,6 @@ namespace MVCclient.Controllers
                 ClientId = Clients.Mvc,
                 ClientSecret = Secrets.MvcSecret,
                 RefreshToken = refreshToken,
-                // GrantType =  "refresh_token",
                 Scope = "offline_access ApiOne ApiTwo ApiThree openid profile"
             });
 

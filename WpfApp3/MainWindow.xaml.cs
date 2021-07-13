@@ -42,7 +42,8 @@ namespace WpfApp3
         [Authorize]
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            await _authentication.GetRequestAsync();
+            var result = await _authentication.GetRequestAsync();
+            MessageBox.Show(result);
         }
     }
 }
