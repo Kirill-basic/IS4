@@ -54,7 +54,7 @@ namespace MVCclient.Controllers
 
             try
             {
-                var result = await GetSecret(accessToken);
+                var result = await GetSecretAsync(accessToken);
 
                 ViewBag.Message = result;
                 return View();
@@ -68,19 +68,12 @@ namespace MVCclient.Controllers
 
                 var newAccessToken = await HttpContext.GetTokenAsync("access_token");
 
-                var result = await GetSecret(newAccessToken);
+                var result = await GetSecretAsync(newAccessToken);
                 ViewBag.Message = result;
                 return View();
             }
         }
 
-        [Authorize]
-        public async Task<string> GetSecret(string accessToken)
-        {
-            var response = await GetSecretAsync(accessToken);
-
-            return response;
-        }
 
         public async Task<string> GetRefreshed(string refreshToken)
         {
@@ -149,22 +142,12 @@ namespace MVCclient.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var apiClient = _httpClientFactory.CreateClient();
             apiClient.SetBearerToken(accessToken);
+
             var response = await apiClient.GetAsync("https://localhost:7001/secret");
             var content = await response.Content.ReadAsStringAsync();
             ViewBag.Message = content;
 
             return View();
-        } 
-
-        public async Task<string> GetSecret(string accessToken)
-        {
-            var apiClient = _httpClientFactory.CreateClient();
-
-            apiClient.SetBearerToken(accessToken);
-            var response = await apiClient.GetAsync("https://localhost:44387/secret");
-
-            var content = await response.Content.ReadAsStringAsync();
-            return content;
         }
     }
 }
