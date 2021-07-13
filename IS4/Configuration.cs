@@ -94,11 +94,13 @@ namespace IS4
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.OfflineAccess,
                     Scopes.ApiOneScope,
                 },
+                AllowOfflineAccess = true,
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
-
+                AccessTokenLifetime = 30
             }
         };
     }

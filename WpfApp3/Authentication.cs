@@ -1,4 +1,6 @@
-﻿using IdentityModel.OidcClient;
+﻿using Constants;
+using IdentityModel.OidcClient;
+using IdentityModel.OidcClient.Results;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,8 +13,9 @@ namespace WpfApp3
     {
         private static Authentication _authenticationInstance;
         private OidcClient _client;
-        private LoginResult _loginResult;
         public ClaimsPrincipal User;
+        private Credentials _credentials;
+
         public bool IsAuthenticated
         {
             get
@@ -26,8 +29,8 @@ namespace WpfApp3
             var options = new OidcClientOptions()
             {
                 Authority = "https://localhost:5001",
-                ClientId = Constants.Clients.Wpf,
-                Scope = "openid profile ApiOne",
+                ClientId = Clients.Wpf,
+                Scope = "openid profile ApiOne offline_access",
                 RedirectUri = "http://localhost/sample-wpf-app",
                 Browser = new WpfEmbeddedBrowser()
             };
@@ -49,24 +52,68 @@ namespace WpfApp3
 
         public async Task Login()
         {
-            _loginResult = await _client.LoginAsync();
-            User = _loginResult.User;
+            var loginResult = await _client.LoginAsync();
+            _credentials = loginResult.ToCredentials();
+            User = loginResult.User;
         }
 
-        public async Task GetRequestAsync()
+        public async Task<string> GetRequestAsync()
         {
+            var client = new HttpClient();
             try
             {
-                var client = new HttpClient();
-                var token = _loginResult.AccessToken;
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _loginResult.AccessToken);
+                var token = _credentials.AccessToken;
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _credentials.AccessToken);
                 var apiResult = await client.GetStringAsync("https://localhost:8001/secret");
+                return apiResult;
             }
             catch (Exception e)
             {
+                await RefreshTokenAsync();
 
-                Console.WriteLine(e);
+                //old token is received here
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _credentials.AccessToken);
+                var apiResult = await client.GetStringAsync("https://localhost:8001/secret");
+                return apiResult;
             }
         }
+
+        private async Task RefreshTokenAsync()
+        {
+            var refreshToken = _credentials.RefreshToken;
+            var refreshTokenResult = await _client.RefreshTokenAsync(refreshToken);
+
+            _credentials = refreshTokenResult.ToCredentials();
+        }
+    }
+
+
+    //
+    public class Credentials
+    {
+        public string AccessToken { get; set; } = "";
+        public string IdentityToken { get; set; } = "";
+        public string RefreshToken { get; set; } = "";
+        public DateTime AccessTokenExpiration { get; set; }
+    }
+
+
+    public static class CredentialsExtensions
+    {
+        public static Credentials ToCredentials(this LoginResult loginResult) => new Credentials()
+        {
+            AccessToken = loginResult.AccessToken,
+            IdentityToken = loginResult.IdentityToken,
+            RefreshToken = loginResult.RefreshToken,
+            AccessTokenExpiration = loginResult.AccessTokenExpiration
+        };
+
+        public static Credentials ToCredentials(this RefreshTokenResult refreshTokenResult) => new Credentials()
+        {
+            AccessToken = refreshTokenResult.AccessToken,
+            IdentityToken = refreshTokenResult.IdentityToken,
+            RefreshToken = refreshTokenResult.RefreshToken,
+            AccessTokenExpiration = refreshTokenResult.AccessTokenExpiration
+        };
     }
 }
