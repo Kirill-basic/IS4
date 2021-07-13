@@ -88,7 +88,7 @@ namespace WpfApp3
     }
 
 
-    //
+    //This is instead of loginResult
     public class Credentials
     {
         public string AccessToken { get; set; } = "";
@@ -98,6 +98,7 @@ namespace WpfApp3
     }
 
 
+    //extensions just for convenience
     public static class CredentialsExtensions
     {
         public static Credentials ToCredentials(this LoginResult loginResult) => new Credentials()
