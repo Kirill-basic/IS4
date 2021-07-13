@@ -31,8 +31,17 @@ namespace IS4
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource
+                {
+                    Name = "rc.scope",
+                    UserClaims =
+                    {
+                        ClaimTypes.Role,
+                        ClaimTypes.Email,
+                        ClaimTypes.MobilePhone
+                    }
+                }
             };
-
 
         public static IEnumerable<Client> GetClients() => new List<Client>
         {
@@ -43,6 +52,7 @@ namespace IS4
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 AllowedScopes = {Scopes.ApiOneScope}
+
             },
             new Client
             {

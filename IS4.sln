@@ -16,6 +16,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiThree", "ApiThree\ApiThree.csproj", "{E5568E8F-E8F3-48EE-B9E3-658CC9AB9D36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp3", "WpfApp3\WpfApp3.csproj", "{37CC771F-FB6A-47A3-9376-C86EE28AF443}"
+
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +52,7 @@ Global
 		{37CC771F-FB6A-47A3-9376-C86EE28AF443}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37CC771F-FB6A-47A3-9376-C86EE28AF443}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37CC771F-FB6A-47A3-9376-C86EE28AF443}.Release|Any CPU.Build.0 = Release|Any CPU
+
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
