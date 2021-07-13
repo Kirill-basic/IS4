@@ -1,4 +1,5 @@
 ﻿using IdentityModel.OidcClient;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -26,7 +27,7 @@ namespace WpfApp3
             {
                 Authority = "https://localhost:5001",
                 ClientId = Constants.Clients.Wpf,
-                Scope = "openid profile",
+                Scope = "openid profile ApiOne",
                 RedirectUri = "http://localhost/sample-wpf-app",
                 Browser = new WpfEmbeddedBrowser()
             };
@@ -54,9 +55,18 @@ namespace WpfApp3
 
         public async Task GetRequestAsync()
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _loginResult.AccessToken);
-            var apiResult = await client.GetStringAsync("https://localhost:44387/secret");
+            try
+            {
+                var client = new HttpClient();
+                var token = _loginResult.AccessToken;
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _loginResult.AccessToken);
+                var apiResult = await client.GetStringAsync("https://localhost:8001/secret");
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e);
+            }
         }
     }
 }

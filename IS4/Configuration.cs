@@ -98,6 +98,7 @@ namespace IS4
                 },
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
+
             }
         };
     }
