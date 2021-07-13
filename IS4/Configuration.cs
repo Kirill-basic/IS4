@@ -3,6 +3,7 @@ using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace IS4
 {
@@ -77,7 +78,7 @@ namespace IS4
                 RequireConsent = false,
                 AlwaysIncludeUserClaimsInIdToken = true,
                 AlwaysSendClientClaims = true,
-                AccessTokenLifetime = 15
+                AccessTokenLifetime = 60
             },
             new Client
             {

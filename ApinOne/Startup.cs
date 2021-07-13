@@ -22,7 +22,7 @@ namespace ApiOne
                     config.Audience = Scopes.ApiOneScope;
                     config.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ClockSkew = TimeSpan.FromSeconds(10)
+                        ClockSkew = TimeSpan.FromSeconds(30)
                     };
                 });
 
