@@ -4,12 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Constants;
+using Newtonsoft.Json;
 
 namespace MVCclient.Controllers
 {
@@ -27,35 +26,121 @@ namespace MVCclient.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Method for requesting new method using refresh token
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        private async Task RefreshToken(string refreshToken)
+        {
+            var refreshClient = _httpClientFactory.CreateClient();
+            var resultRefreshTokenAsync = await refreshClient.RequestRefreshTokenAsync(new RefreshTokenRequest
+            {
+                Address = "https://localhost:5001/connect/token",
+                ClientId = Clients.Mvc,
+                ClientSecret = Secrets.MvcSecret,
+                RefreshToken = refreshToken,
+                // GrantType =  "refresh_token",
+                Scope = "offline_access ApiOne ApiTwo ApiThree openid profile"
+            });
+
+            await UpdateAuthenticatedContext(resultRefreshTokenAsync.AccessToken, resultRefreshTokenAsync.RefreshToken);
+        }
+
         [Authorize]
         public async Task<IActionResult> SecretAsync()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var idToken = await HttpContext.GetTokenAsync("id_token");
-            var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
 
-            var _idToken = new JwtSecurityTokenHandler().ReadJwtToken(idToken);
-            var _accessToken = new JwtSecurityTokenHandler().ReadJwtToken(accessToken);
+            try
+            {
+                var result = await GetSecret(accessToken);
 
-            var result = await GetSecret(accessToken);
+                ViewBag.Message = result;
+                return View();
+            }
+            catch (Exception e)
+            {
+                var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
 
-            ViewBag.Message = result;
+                // await GetRefreshed(refreshToken);
+                await RefreshToken(refreshToken);
 
-            return View();
+                var newAccessToken = await HttpContext.GetTokenAsync("access_token");
+
+                var result = await GetSecret(newAccessToken);
+                ViewBag.Message = result;
+                return View();
+            }
         }
 
+        [Authorize]
         public async Task<string> GetSecret(string accessToken)
         {
-            var apiClient = _httpClientFactory.CreateClient();
+            var response = await GetSecretAsync(accessToken);
 
+            return response;
+        }
+
+        public async Task<string> GetRefreshed(string refreshToken)
+        {
+            var refreshClient = _httpClientFactory.CreateClient();
+
+            var parameters = new Dictionary<string, string>
+            {
+                ["refresh_token"] = refreshToken,
+                ["grant_type"] = "refresh_token",
+                ["client_id"] = Clients.Mvc,
+                ["client_secret"] = Secrets.MvcSecret
+            };
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://localhost:5001/connect/token")
+            {
+                Content = new FormUrlEncodedContent(parameters)
+            };
+
+            var basics = "username:password";
+            var encodedData = Encoding.UTF8.GetBytes(basics);
+            var encoded64BaseData = Convert.ToBase64String(encodedData);
+
+            request.Headers.Add("Authorization", $"Bearer {encoded64BaseData}");
+            var refreshResponse = await refreshClient.SendAsync(request);
+
+            var tokenData = await refreshResponse.Content.ReadAsStringAsync();
+            var tokenResponse = JsonConvert.DeserializeObject<Dictionary<string, string>>(tokenData);
+            var newAccessToken = tokenResponse.GetValueOrDefault("access_token");
+            var newRefreshToken = tokenResponse.GetValueOrDefault("refresh_token");
+
+            await UpdateAuthenticatedContext(newAccessToken, newRefreshToken);
+            return newAccessToken;
+        }
+
+
+        private async Task UpdateAuthenticatedContext(string accessToken, string refreshToken)
+        {
+            //TODO: error here. Wrong authentication scheme
+            var authenticatingResult = await HttpContext.AuthenticateAsync("Cookie");
+
+            authenticatingResult.Properties.UpdateTokenValue("access_token", accessToken);
+            authenticatingResult.Properties.UpdateTokenValue("refresh_token", refreshToken);
+
+            await HttpContext.SignInAsync(authenticatingResult.Principal, authenticatingResult.Properties);
+        }
+
+
+        private async Task<string> GetSecretAsync(string accessToken)
+        {
+            var apiClient = _httpClientFactory.CreateClient();
             apiClient.SetBearerToken(accessToken);
 
-            var response = await apiClient.GetAsync("https://localhost:44387/secret");
+            var result = await apiClient.GetStringAsync("https://localhost:8001/secret");
 
-            var content = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrEmpty(result))
+            {
+                throw new ArgumentNullException();
+            }
 
-            return content;
+            return result;
         }
+
 
         [Authorize(Policy = "IsManager")]
         public async Task<IActionResult> GetApiThreeSecret()
@@ -63,19 +148,9 @@ namespace MVCclient.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var apiClient = _httpClientFactory.CreateClient();
             apiClient.SetBearerToken(accessToken);
-            var response = await apiClient.GetAsync("https://localhost:44376/secret");
+            var response = await apiClient.GetAsync("https://localhost:7001/secret");
             var content = await response.Content.ReadAsStringAsync();
             ViewBag.Message = content;
-            return View();
-        }
-
-        [Authorize]
-        public async Task<IActionResult> GetIdentitySecretAsync()
-        {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var apiClient = _httpClientFactory.CreateClient();
-            apiClient.SetBearerToken(accessToken);
-            var response = await apiClient.GetAsync("https://localhost:5001/LocalApi");
             return View();
         }
     }

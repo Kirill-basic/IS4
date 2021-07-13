@@ -36,7 +36,10 @@ namespace MVCclient
                     config.Scope.Add(Scopes.ApiOneScope);
                     config.Scope.Add(Scopes.ApiTwoScope);
                     config.Scope.Add(Scopes.ApiThreeScope);
-                    config.Scope.Add("IdentityServerApi");
+
+                    //TODO:some reference issues, don't want to solve them now
+                    // config.Scope.Add(IdentityServerConstants.StandardScopes.OfflineAccess);
+                    config.Scope.Add("offline_access");
                 });
 
             services.AddAuthorization(config =>

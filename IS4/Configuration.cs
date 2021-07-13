@@ -60,11 +60,14 @@ namespace IS4
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
 
-                    IdentityServerConstants.LocalApi.ScopeName
+                    //TODO:not sure do i need it or not
+                    IdentityServerConstants.StandardScopes.OfflineAccess
                 },
-                RequireConsent=false,
-                AlwaysIncludeUserClaimsInIdToken=true,
-                AlwaysSendClientClaims=true
+                AllowOfflineAccess = true,
+                RequireConsent = false,
+                AlwaysIncludeUserClaimsInIdToken = true,
+                AlwaysSendClientClaims = true,
+                AccessTokenLifetime = 15
             },
             new Client
             {
