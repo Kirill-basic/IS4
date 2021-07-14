@@ -15,7 +15,7 @@ namespace IS4.Controllers
         public IActionResult Index()
         {
             var claims = User.Claims;
-            return View();
+            throw new NotImplementedException();
         }
     }
 }
