@@ -9,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 
-namespace MVCclient
+namespace MVCClient
 {
     public class Startup
     {

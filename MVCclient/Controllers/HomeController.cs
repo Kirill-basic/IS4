@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Constants;
 using Newtonsoft.Json;
 
-namespace MVCclient.Controllers
+namespace MVCClient.Controllers
 {
     public class HomeController : Controller
     {
@@ -26,10 +26,7 @@ namespace MVCclient.Controllers
             return View();
         }
 
-        /// <summary>
-        /// Method for requesting new method using refresh token
-        /// </summary>
-        /// <param name="refreshToken"></param>
+        
         private async Task RefreshToken(string refreshToken)
         {
             var refreshClient = _httpClientFactory.CreateClient();
@@ -45,6 +42,7 @@ namespace MVCclient.Controllers
             await UpdateAuthenticatedContext(resultRefreshTokenAsync.AccessToken, resultRefreshTokenAsync.RefreshToken);
         }
 
+        
         [Authorize]
         public async Task<IActionResult> SecretAsync()
         {
@@ -61,6 +59,7 @@ namespace MVCclient.Controllers
             {
                 var refreshToken = await HttpContext.GetTokenAsync("refresh_token");
 
+                //custom implementation of refreshing
                 // await GetRefreshed(refreshToken);
                 await RefreshToken(refreshToken);
 
@@ -72,6 +71,24 @@ namespace MVCclient.Controllers
             }
         }
 
+
+        private async Task<string> GetSecretAsync(string accessToken)
+        {
+            var apiClient = _httpClientFactory.CreateClient();
+            apiClient.SetBearerToken(accessToken);
+
+            var result = await apiClient.GetStringAsync("https://localhost:8001/secret");
+
+            if (string.IsNullOrEmpty(result))
+            {
+                throw new ArgumentNullException();
+            }
+
+            return result;
+        }
+
+        
+        #region OldMethods
 
         public async Task<string> GetRefreshed(string refreshToken)
         {
@@ -117,21 +134,7 @@ namespace MVCclient.Controllers
             await HttpContext.SignInAsync(authenticatingResult.Principal, authenticatingResult.Properties);
         }
 
-
-        private async Task<string> GetSecretAsync(string accessToken)
-        {
-            var apiClient = _httpClientFactory.CreateClient();
-            apiClient.SetBearerToken(accessToken);
-
-            var result = await apiClient.GetStringAsync("https://localhost:8001/secret");
-
-            if (string.IsNullOrEmpty(result))
-            {
-                throw new ArgumentNullException();
-            }
-
-            return result;
-        }
+        #endregion
 
 
         [Authorize(Policy = "IsManager")]
