@@ -5,35 +5,31 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
-
-namespace MVCClient
+namespace NoSecretMvc
 {
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(config =>
-            {
-                config.DefaultScheme = "Cookie";
-                config.DefaultChallengeScheme = "oidc";
-            })
+                {
+                    config.DefaultScheme = "Cookie";
+                    config.DefaultChallengeScheme = "oidc";
+                })
                 .AddCookie("Cookie")
                 .AddOpenIdConnect("oidc", config =>
                 {
                     config.Authority = "https://localhost:5001/";
 
-                    config.ClientId = Clients.Mvc;
-                    config.ClientSecret = Secrets.MvcSecret;
+                    config.ClientId = Clients.NoSecret;
+                    // config.ClientSecret = Secrets.MvcSecret;
                     config.SaveTokens = true;
                     config.ResponseType = "code";
 
                     config.Scope.Add(Scopes.ApiOneScope);
                     config.Scope.Add(Scopes.ApiTwoScope);
                     config.Scope.Add(Scopes.ApiThreeScope);
-                    // config.Scope.Add("openid");
-                    // config.Scope.Add("profile");
-                    
-                    // config.Scope.Add(IdentityServerConstants.StandardScopes.OfflineAccess);
+
                     config.Scope.Add("offline_access");
                 });
 

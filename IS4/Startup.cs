@@ -29,7 +29,7 @@ namespace IS4
                 config.UseInMemoryDatabase("MEMORY");
             });
 
-            // AddIdentity registers the services
+            // AddIdentity registers User with additional options
             services.AddIdentity<CustomUser, IdentityRole>(config =>
             {
                 config.Password.RequiredLength = 4;

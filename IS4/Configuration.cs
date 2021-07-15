@@ -101,6 +101,32 @@ namespace IS4
                 AllowAccessTokensViaBrowser = true,
                 RequireConsent = false,
                 AccessTokenLifetime = 30
+            },
+            new Client()
+            {
+                ClientId = Clients.NoSecret,
+                RequireClientSecret = false,
+                
+                RedirectUris = {"https://localhost:4001/signin-oidc"},
+                
+                AllowedGrantTypes = GrantTypes.Code,
+                AllowedScopes =
+                {
+                    Scopes.ApiOneScope,
+                    Scopes.ApiTwoScope,
+                    Scopes.ApiThreeScope,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+
+                    //TODO:not sure do i need it or not
+                    IdentityServerConstants.StandardScopes.OfflineAccess
+                },
+                
+                AllowOfflineAccess = true,
+                RequireConsent = false,
+                AlwaysIncludeUserClaimsInIdToken = true,
+                AlwaysSendClientClaims = true,
+                AccessTokenLifetime = 60
             }
         };
     }
