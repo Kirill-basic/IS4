@@ -19,6 +19,7 @@
             <Button Content="Button1" Margin="5" Click="Button_Click"/>
             <Button Content="Button2" Margin="5" Click="Button_Click_1"/>
             <Button Content="Button3" Margin="5" Click="Button_Click_2"/>
+            <Button Content="Button4" Margin="5" Click="Button_Click_3"/>
         </StackPanel>
         <local:ProtectedWpfControl Grid.Row="0" Grid.Column="1"/>
         <local:UnProtectedControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"/>

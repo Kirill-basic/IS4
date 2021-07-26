@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Constants;
 
@@ -33,14 +34,17 @@ namespace IS4.Controllers
             var user = User;
 
             var claims = user.Claims;
+            var accessToken = HttpContext.GetTokenAsync("access_token");
 
             return View();
         }
 
         
+        [Authorize]
         public IActionResult Secret1Async()
         {
             var claims = User.Claims;
+            var accessToken = HttpContext.GetTokenAsync("access_token");
             return View();
         }
 

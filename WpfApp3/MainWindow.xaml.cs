@@ -6,6 +6,7 @@ using System.Windows;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Windows.Controls;
+using System.Threading.Tasks;
 
 namespace WpfApp3
 {
@@ -44,6 +45,11 @@ namespace WpfApp3
         {
             var result = await _authentication.GetRequestAsync();
             MessageBox.Show(result);
+        }
+
+        private async void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var result = _authentication.LogOut();
         }
     }
 }

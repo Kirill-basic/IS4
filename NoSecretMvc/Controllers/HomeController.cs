@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NoSecretMvc.Models;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -26,6 +23,17 @@ namespace NoSecretMvc.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+
+        [Authorize]
+        public IActionResult TestClaim()
+        {
+            var claims = User.Claims.ToList();
+            var identity = User.Identity;
+            var accessToken = HttpContext.GetTokenAsync("access_token");
+
             return View();
         }
 

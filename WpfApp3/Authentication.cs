@@ -57,6 +57,11 @@ namespace WpfApp3
             User = loginResult.User;
         }
 
+        public async Task LogOut()
+        {
+            var logoutResult = await _client.LogoutAsync();
+        }
+
         public async Task<string> GetRequestAsync()
         {
             var client = new HttpClient();

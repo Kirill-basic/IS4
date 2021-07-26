@@ -22,7 +22,6 @@ namespace ApiOne.Controllers
                 return "this is admin";
             }
 
-            User.AddIdentity(new ClaimsIdentity(new List<Claim> { new Claim(ClaimTypes.Country, "Russia") }));
             return "Secret message from apione";
         }
     }

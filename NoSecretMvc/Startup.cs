@@ -27,10 +27,10 @@ namespace NoSecretMvc
                     config.ResponseType = "code";
 
                     config.Scope.Add(Scopes.ApiOneScope);
-                    config.Scope.Add(Scopes.ApiTwoScope);
-                    config.Scope.Add(Scopes.ApiThreeScope);
 
                     config.Scope.Add("offline_access");
+                    config.Scope.Add("rc.scope");
+                    config.Scope.Add("email");
                 });
 
             services.AddAuthorization(config =>

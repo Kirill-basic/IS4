@@ -32,6 +32,7 @@ namespace IS4
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email(),
                 new IdentityResource
                 {
                     Name = "rc.scope",
@@ -70,8 +71,6 @@ namespace IS4
                     Scopes.ApiThreeScope,
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-
-                    //TODO:not sure do i need it or not
                     IdentityServerConstants.StandardScopes.OfflineAccess
                 },
                 AllowOfflineAccess = true,
@@ -106,22 +105,21 @@ namespace IS4
             {
                 ClientId = Clients.NoSecret,
                 RequireClientSecret = false,
-                
+
                 RedirectUris = {"https://localhost:4001/signin-oidc"},
-                
+
                 AllowedGrantTypes = GrantTypes.Code,
                 AllowedScopes =
                 {
                     Scopes.ApiOneScope,
-                    Scopes.ApiTwoScope,
-                    Scopes.ApiThreeScope,
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-
-                    //TODO:not sure do i need it or not
-                    IdentityServerConstants.StandardScopes.OfflineAccess
+                    IdentityServerConstants.StandardScopes.OfflineAccess,
+                    IdentityServerConstants.StandardScopes.Email,
+                    
+                    "rc.scope"
                 },
-                
+
                 AllowOfflineAccess = true,
                 RequireConsent = false,
                 AlwaysIncludeUserClaimsInIdToken = true,
