@@ -39,7 +39,6 @@ namespace IS4
                     UserClaims =
                     {
                         ClaimTypes.Role,
-                        ClaimTypes.Email,
                         ClaimTypes.MobilePhone
                     }
                 }
@@ -117,7 +116,7 @@ namespace IS4
                     IdentityServerConstants.StandardScopes.OfflineAccess,
                     IdentityServerConstants.StandardScopes.Email,
 
-                    //"rc.scope"
+                    "rc.scope"
                 },
 
                 AllowOfflineAccess = true,

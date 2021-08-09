@@ -33,7 +33,7 @@ namespace NoSecretMvc
                     config.Scope.Add("openid");
                     config.Scope.Add("profile");
 
-                    //config.Scope.Add("rc.scope");
+                    config.Scope.Add("rc.scope");
                 });
 
             services.AddAuthorization(config =>
@@ -41,7 +41,11 @@ namespace NoSecretMvc
                 config.AddPolicy("IsManager", builder =>
                 {
                     builder.RequireClaim(ClaimTypes.Role, "Manager");
+                });
 
+                config.AddPolicy("HasPhoneNumber", builder =>
+                {
+                    builder.RequireClaim(ClaimTypes.MobilePhone);
                 });
             });
 

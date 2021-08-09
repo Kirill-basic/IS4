@@ -27,7 +27,7 @@ namespace NoSecretMvc.Controllers
         }
 
 
-        [Authorize]
+        [Authorize(Policy = "HasPhoneNumber")]
         public IActionResult TestClaim()
         {
             var claims = User.Claims.ToList();
