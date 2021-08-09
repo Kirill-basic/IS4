@@ -28,7 +28,7 @@ namespace IS4
 
             var claims = principal.Claims.ToList();
             claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
-            //claims.Add(new Claim(ClaimTypes.MobilePhone, "89326092571"));
+            claims.Add(new Claim(ClaimTypes.MobilePhone, "89326092571"));
 
             context.IssuedClaims = claims;
         }
