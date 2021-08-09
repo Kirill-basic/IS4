@@ -29,8 +29,11 @@ namespace NoSecretMvc
                     config.Scope.Add(Scopes.ApiOneScope);
 
                     config.Scope.Add("offline_access");
-                    config.Scope.Add("rc.scope");
                     config.Scope.Add("email");
+                    config.Scope.Add("openid");
+                    config.Scope.Add("profile");
+
+                    //config.Scope.Add("rc.scope");
                 });
 
             services.AddAuthorization(config =>

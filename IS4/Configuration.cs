@@ -116,8 +116,8 @@ namespace IS4
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.OfflineAccess,
                     IdentityServerConstants.StandardScopes.Email,
-                    
-                    "rc.scope"
+
+                    //"rc.scope"
                 },
 
                 AllowOfflineAccess = true,
