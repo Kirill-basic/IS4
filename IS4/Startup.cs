@@ -50,7 +50,7 @@ namespace IS4
             services.AddIdentityServer(config => 
             {
                 config.UserInteraction.LoginUrl = "/Auth/Login";
-                //config.Discovery.CustomEntries.Add("local_api", "~/localapi");
+                config.Discovery.CustomEntries.Add("local_api", "~/localapi");
             })
                 .AddAspNetIdentity<CustomUser>()
                 .AddInMemoryClients(Configuration.GetClients())

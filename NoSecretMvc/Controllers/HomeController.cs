@@ -35,10 +35,10 @@ namespace NoSecretMvc.Controllers
 
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             var client = _httpClientFactory.CreateClient();
-            
+
             client.BaseAddress = new Uri("https://localhost:5001");
             client.DefaultRequestHeaders.Add("Bearer", accessToken);
-            
+
             var response = await client.GetAsync("");
 
             return View();
@@ -81,16 +81,10 @@ namespace NoSecretMvc.Controllers
         }
 
 
+        [Authorize]
         public async Task<IActionResult> GetLocalApi()
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            //var apiClient = _httpClientFactory.CreateClient();
-            //apiClient.SetBearerToken(accessToken);
-
-            //var response = await apiClient.GetAsync("https://localhost:7001/secret");
-            //var content = await response.Content.ReadAsStringAsync();
-            //ViewBag.Message = content;
-
 
             var identityClient = _httpClientFactory.CreateClient();
             identityClient.SetBearerToken(accessToken);
@@ -99,4 +93,5 @@ namespace NoSecretMvc.Controllers
 
             return View();
         }
+    }
 }

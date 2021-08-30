@@ -116,7 +116,8 @@ namespace IS4
                     IdentityServerConstants.StandardScopes.OfflineAccess,
                     IdentityServerConstants.StandardScopes.Email,
 
-                    "rc.scope"
+                    "rc.scope",
+                    IdentityServerConstants.LocalApi.ScopeName
                 },
 
                 AllowOfflineAccess = true,

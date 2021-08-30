@@ -1,4 +1,5 @@
 using Constants;
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,9 @@ namespace NoSecretMvc
                     config.Scope.Add("profile");
 
                     config.Scope.Add("rc.scope");
+
+                    //adding scope for local api of is4
+                    config.Scope.Add(IdentityServerConstants.LocalApi.ScopeName);
                 });
 
             services.AddAuthorization(config =>
