@@ -1,4 +1,5 @@
 using Constants;
+using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,9 +33,9 @@ namespace MVCClient
                     config.Scope.Add(Scopes.ApiThreeScope);
                     // config.Scope.Add("openid");
                     // config.Scope.Add("profile");
-                    
-                    // config.Scope.Add(IdentityServerConstants.StandardScopes.OfflineAccess);
-                    config.Scope.Add("offline_access");
+
+                    //config.Scope.Add(IdentityServerConstants.LocalApi.ScopeName);
+                    config.Scope.Add(IdentityServerConstants.StandardScopes.OfflineAccess);
                 });
 
             services.AddAuthorization(config =>
