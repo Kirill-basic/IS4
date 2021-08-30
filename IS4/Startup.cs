@@ -47,7 +47,11 @@ namespace IS4
                 config.LoginPath = "/Auth/Login";
             });
 
-            services.AddIdentityServer(config => { config.UserInteraction.LoginUrl = "/Auth/Login"; })
+            services.AddIdentityServer(config => 
+            {
+                config.UserInteraction.LoginUrl = "/Auth/Login";
+                //config.Discovery.CustomEntries.Add("local_api", "~/localapi");
+            })
                 .AddAspNetIdentity<CustomUser>()
                 .AddInMemoryClients(Configuration.GetClients())
                 .AddInMemoryApiResources(Configuration.GetApiResources())
@@ -55,6 +59,7 @@ namespace IS4
                 .AddInMemoryApiScopes(Configuration.GetApiScopes())
                 .AddDeveloperSigningCredential();
 
+            //for local api authentication
             services.AddLocalApiAuthentication();
 
             services.AddTransient<IProfileService, CustomProfileService>();

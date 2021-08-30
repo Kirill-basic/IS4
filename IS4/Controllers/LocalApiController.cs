@@ -9,13 +9,13 @@ using static IdentityServer4.IdentityServerConstants;
 namespace IS4.Controllers
 {
     [Route("localApi")]
-    [Authorize(LocalApi.PolicyName)]
+    //[Authorize(LocalApi.PolicyName)]
     public class LocalApiController : Controller
     {
         public IActionResult Index()
         {
             var claims = User.Claims;
-            throw new NotImplementedException();
+            return Ok(claims);
         }
     }
 }

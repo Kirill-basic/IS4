@@ -28,11 +28,18 @@ namespace NoSecretMvc.Controllers
 
 
         [Authorize(Policy = "HasPhoneNumber")]
-        public IActionResult TestClaim()
+        public async Task<IActionResult> TestClaimAsync()
         {
             var claims = User.Claims.ToList();
             var identity = User.Identity;
-            var accessToken = HttpContext.GetTokenAsync("access_token");
+
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var client = _httpClientFactory.CreateClient();
+            
+            client.BaseAddress = new Uri("https://localhost:5001");
+            client.DefaultRequestHeaders.Add("Bearer", accessToken);
+            
+            var response = await client.GetAsync("");
 
             return View();
         }
@@ -72,5 +79,24 @@ namespace NoSecretMvc.Controllers
 
             return result;
         }
-    }
+
+
+        public async Task<IActionResult> GetLocalApi()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var apiClient = _httpClientFactory.CreateClient();
+            //apiClient.SetBearerToken(accessToken);
+
+            //var response = await apiClient.GetAsync("https://localhost:7001/secret");
+            //var content = await response.Content.ReadAsStringAsync();
+            //ViewBag.Message = content;
+
+
+            var identityClient = _httpClientFactory.CreateClient();
+            identityClient.SetBearerToken(accessToken);
+            var result = await identityClient.GetAsync("https://localhost:5001/localapi");
+            var identityContent = await result.Content.ReadAsStringAsync();
+
+            return View();
+        }
 }
